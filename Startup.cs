@@ -25,6 +25,7 @@ namespace IncludeTypeBackend
 
             services.AddDbContext<PostgreSqlContext>(options => options.UseNpgsql(Configuration.GetConnectionString("PostgreSqlDatabase")));
             services.AddScoped<JwtService>();
+            services.AddScoped<UserService>();
 
             services.AddSwaggerGen(c =>
             {
