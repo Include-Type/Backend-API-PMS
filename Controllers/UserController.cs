@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using static BCrypt.Net.BCrypt;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Http;
 
 namespace IncludeTypeBackend.Controllers
 {
@@ -116,7 +117,12 @@ namespace IncludeTypeBackend.Controllers
             }
 
             string jwt = _jwtService.Generate(requestedUser.UserId);
-            Response.Cookies.Append("jwt", jwt);
+            Response.Cookies.Append("jwt", jwt, new CookieOptions
+            {
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Secure = true
+            });
             return Ok("Login Successfull.");
         }
 
