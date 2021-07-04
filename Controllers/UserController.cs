@@ -147,7 +147,12 @@ namespace IncludeTypeBackend.Controllers
         [HttpPost("[action]")]
         public ActionResult Logout()
         {
-            Response.Cookies.Delete("jwt");
+            Response.Cookies.Delete("jwt", new CookieOptions
+            {
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Secure = true
+            });
             return Ok("Logout Successfull.");
         }
     }
