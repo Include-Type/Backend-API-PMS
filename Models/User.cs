@@ -20,7 +20,6 @@ namespace IncludeTypeBackend.Models
         [Required]
         public string Email { get; set; }
         [MaxLength(100)]
-        [Required]
         public string Password { get; set; }
     }
 }

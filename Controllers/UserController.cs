@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using IncludeTypeBackend.Services;
 using IncludeTypeBackend.Models;
 using IncludeTypeBackend.Dtos;
@@ -24,17 +25,17 @@ namespace IncludeTypeBackend.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<User>> Get() => _user.GetAllUsers();
+        public async Task<ActionResult<List<User>>> Get() => await _user.GetAllUsersAsync();
 
         [HttpPost("[action]")]
-        public ActionResult AddUser([FromBody] User user)
+        public async Task<ActionResult> AddUser([FromBody] User user)
         {
             if (ModelState.IsValid)
             {
                 Guid guid = Guid.NewGuid();
                 user.UserId = Convert.ToString(guid);
                 user.Password = HashPassword(user.Password);
-                _user.AddUser(user);
+                await _user.AddUserAsync(user);
                 return Ok("User successfully added.");
             }
 
@@ -42,9 +43,9 @@ namespace IncludeTypeBackend.Controllers
         }
 
         [HttpGet("[action]/{key}")]
-        public ActionResult<User> GetUser(string key)
+        public async Task<ActionResult<User>> GetUser(string key)
         {
-            User user = _user.GetUser(key);
+            User user = await _user.GetUserAsync(key);
             if (user is null)
             {
                 return NotFound("User not found!");
@@ -54,53 +55,61 @@ namespace IncludeTypeBackend.Controllers
         }
 
         [HttpPut("[action]/{key}")]
-        public ActionResult UpdateUser(string key, [FromBody] User user)
+        public async Task<ActionResult> UpdateUser(string key, [FromBody] User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("Invalid user credentials!");
             }
 
-            User existingUser = _user.GetUser(key);
+            User existingUser = await _user.GetUserAsync(key);
             if (existingUser is null)
             {
                 return NotFound("User not found!");
             }
 
-            user.Password = HashPassword(user.Password);
-            _user.UpdateUser(existingUser, user);
+            if (user.Password.Equals(""))
+            {
+                user.Password = existingUser.Password;
+            }
+            else
+            {
+                user.Password = HashPassword(user.Password);
+            }
+
+            await _user.UpdateUserAsync(existingUser, user);
             return Ok("User successfully updated.");
         }
 
         [HttpDelete("[action]/{key}")]
-        public ActionResult DeleteUser(string key)
+        public async Task<ActionResult> DeleteUser(string key)
         {
-            User user = _user.GetUser(key);
+            User user = await _user.GetUserAsync(key);
             if (user is null)
             {
                 return NotFound("User not found!");
             }
 
-            _user.DeleteUser(user);
+            await _user.DeleteUserAsync(user);
             return Ok("User successfully deleted.");
         }
 
         [HttpGet("[action]/{key}")]
-        public ActionResult<bool> CheckForUser(string key)
+        public async Task<ActionResult<bool>> CheckForUser(string key)
         {
-            User user = _user.GetUser(key);
+            User user = await _user.GetUserAsync(key);
             return (user is not null);
         }
 
         [HttpPost("[action]")]
-        public ActionResult Register([FromBody] User user)
+        public async Task<ActionResult> Register([FromBody] User user)
         {
             if (ModelState.IsValid)
             {
                 Guid guid = Guid.NewGuid();
                 user.UserId = Convert.ToString(guid);
                 user.Password = HashPassword(user.Password);
-                _user.AddUser(user);
+                await _user.AddUserAsync(user);
                 return Ok("User successfully registered.");
             }
 
@@ -108,9 +117,9 @@ namespace IncludeTypeBackend.Controllers
         }
 
         [HttpPost("[action]")]
-        public ActionResult Login([FromBody] UserDto user)
+        public async Task<ActionResult> Login([FromBody] UserDto user)
         {
-            User requestedUser = _user.GetUser(user.Key);
+            User requestedUser = await _user.GetUserAsync(user.Key);
             if (requestedUser is null || !Verify(user.Password, requestedUser.Password))
             {
                 return NotFound("Invalid Credentials!");
@@ -127,14 +136,14 @@ namespace IncludeTypeBackend.Controllers
         }
 
         [HttpGet("[action]")]
-        public ActionResult<User> AuthenticatedUser()
+        public async Task<ActionResult<User>> AuthenticatedUser()
         {
             try
             {
                 string jwt = Request.Cookies["jwt"];
                 JwtSecurityToken verifiedToken = _jwtService.Verify(jwt);
                 string key = verifiedToken.Issuer;
-                User user = _user.GetUserById(key);
+                User user = await _user.GetUserByIdAsync(key);
                 return user;
             }
             catch

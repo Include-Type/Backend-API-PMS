@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using IncludeTypeBackend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace IncludeTypeBackend.Services
 {
@@ -10,34 +11,34 @@ namespace IncludeTypeBackend.Services
 
         public UserService(PostgreSqlContext db) => _db = db;
 
-        public List<User> GetAllUsers() => _db.Users.ToList();
+        public async Task<List<User>> GetAllUsersAsync() => await _db.Users.ToListAsync();
 
-        public void AddUser(User user)
+        public async Task AddUserAsync(User user)
         {
-            _db.Users.Add(user);
-            _db.SaveChanges();
+            await _db.Users.AddAsync(user);
+            await _db.SaveChangesAsync();
         }
 
-        public User GetUserById(string key) =>
-            _db.Users.FirstOrDefault(user => user.UserId == key);
+        public async Task<User> GetUserByIdAsync(string key) =>
+            await _db.Users.FirstOrDefaultAsync(user => user.UserId == key);
 
-        public User GetUser(string key) =>
-            _db.Users.FirstOrDefault(user => (user.Email == key || user.Username == key));
+        public async Task<User> GetUserAsync(string key) =>
+            await _db.Users.FirstOrDefaultAsync(user => (user.Email == key || user.Username == key));
 
-        public void UpdateUser(User existingUser, User updatedUser)
+        public async Task UpdateUserAsync(User existingUser, User updatedUser)
         {
             existingUser.FirstName = updatedUser.FirstName;
             existingUser.LastName = updatedUser.LastName;
             existingUser.Username = updatedUser.Username;
             existingUser.Email = updatedUser.Email;
             existingUser.Password = updatedUser.Password;
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
 
-        public void DeleteUser(User user)
+        public async Task DeleteUserAsync(User user)
         {
             _db.Users.Remove(user);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
     }
 }
