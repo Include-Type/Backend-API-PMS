@@ -9,18 +9,32 @@ namespace IncludeTypeBackend.Services
         {
         }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<ProfessionalProfile> ProfessionalProfile { get; set; }
+        public DbSet<Privacy> Privacy { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.HasDefaultSchema("public");
+
             builder.Entity<User>(entity =>
             {
-                entity.HasKey(user => user.UserId);
+                entity.HasKey(user => user.Id);
                 entity.HasIndex(user => user.Username).IsUnique();
                 entity.HasIndex(user => user.Email).IsUnique();
+                entity.HasIndex(user => user.Contact).IsUnique();
             });
             base.OnModelCreating(builder);
+
+            builder.Entity<ProfessionalProfile>(entity =>
+            {
+                entity.HasKey(profile => profile.UserId);
+            });
+
+            builder.Entity<Privacy>(entity =>
+            {
+                entity.HasKey(privacy => privacy.UserId);
+            });
         }
 
         public override int SaveChanges()

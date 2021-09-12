@@ -1,25 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace IncludeTypeBackend.Models
+﻿namespace IncludeTypeBackend.Models
 {
     public class User
     {
-        [Key]
-        [MaxLength(100)]
-        public string UserId { get; set; }
-        [MaxLength(100)]
-        [Required]
+        public string Id { get; set; }
         public string FirstName { get; set; }
-        [MaxLength(100)]
-        [Required]
         public string LastName { get; set; }
-        [MaxLength(100)]
-        [Required]
+        public string Bio { get; set; }
         public string Username { get; set; }
-        [MaxLength(100)]
-        [Required]
         public string Email { get; set; }
-        [MaxLength(100)]
         public string Password { get; set; }
+        public string Address { get; set; }
+        public string Country { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Pincode { get; set; }
+        public string Contact { get; set; }
+        public string Picture { get; set; }
     }
 }
