@@ -22,7 +22,6 @@ namespace IncludeTypeBackend.Services
                 entity.HasKey(user => user.Id);
                 entity.HasIndex(user => user.Username).IsUnique();
                 entity.HasIndex(user => user.Email).IsUnique();
-                entity.HasIndex(user => user.Contact).IsUnique();
             });
             base.OnModelCreating(builder);
 

@@ -13,6 +13,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: Build App
+        run: dotnet build -c Release
+
       - name: Deploy
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
