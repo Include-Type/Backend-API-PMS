@@ -164,6 +164,21 @@ namespace IncludeTypeBackend.Controllers
             return (user is not null);
         }
 
+        [HttpGet("[action]/{keyWithPassword}")]
+        public async Task<ActionResult<bool>> CheckPassword(string keyWithPassword)
+        {
+            string[] temp = keyWithPassword.Split('-');
+            User requestedUser = await _user.GetUserAsync(temp[0]);
+            if (!Verify(temp[1], requestedUser.Password))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         [HttpPost("[action]")]
         public async Task<ActionResult> Register([FromBody] User user)
         {
