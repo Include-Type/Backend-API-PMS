@@ -36,7 +36,7 @@ namespace IncludeTypeBackend.Services
             await _db.User.FirstOrDefaultAsync(user => user.Id == userId);
 
         public async Task<User> GetUserAsync(string key) =>
-            await _db.User.FirstOrDefaultAsync(user => (user.Email == key || user.Username == key));
+            await _db.User.FirstOrDefaultAsync(user => (user.Id == key || user.Email == key || user.Username == key));
 
         public async Task<ProfessionalProfile> GetUserProfessionalProfileAsync(string userId) =>
             await _db.ProfessionalProfile.FirstOrDefaultAsync(profile => profile.UserId == userId);
