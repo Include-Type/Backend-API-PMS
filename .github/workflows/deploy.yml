@@ -1,4 +1,4 @@
-﻿name: Deploy
+name: Deploy
 
 on:
   push:
@@ -12,6 +12,12 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Fetch the DB Credentials
+        run: touch 'appsettings.json'
+        run: echo '${{ secrets.APP_SETTINGS_JSON }}' > 'appsettings.json'
+        run: touch 'appsettings.Development.json'
+        run: echo '${{ secrets.APP_SETTINGS_DEV_JSON }}' > 'appsettings.Development.json'
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
