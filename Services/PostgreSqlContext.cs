@@ -12,6 +12,7 @@ namespace IncludeTypeBackend.Services
         public DbSet<User> User { get; set; }
         public DbSet<ProfessionalProfile> ProfessionalProfile { get; set; }
         public DbSet<Privacy> Privacy { get; set; }
+        public DbSet<ProjectTask> ProjectTask { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -33,6 +34,11 @@ namespace IncludeTypeBackend.Services
             builder.Entity<Privacy>(entity =>
             {
                 entity.HasKey(privacy => privacy.UserId);
+            });
+
+            builder.Entity<ProjectTask>(entity =>
+            {
+                entity.HasKey(task => task.Id);
             });
         }
 
