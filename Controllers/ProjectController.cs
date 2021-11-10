@@ -1,15 +1,3 @@
-using System;
-using System.Threading.Tasks;
-using IncludeTypeBackend.Services;
-using IncludeTypeBackend.Models;
-using IncludeTypeBackend.Dtos;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using static BCrypt.Net.BCrypt;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-
 namespace IncludeTypeBackend.Controllers
 {
     [ApiController]

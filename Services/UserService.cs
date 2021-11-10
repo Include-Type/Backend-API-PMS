@@ -1,10 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using IncludeTypeBackend.Dtos;
-using IncludeTypeBackend.Models;
-using Microsoft.EntityFrameworkCore;
-
-namespace IncludeTypeBackend.Services
+﻿namespace IncludeTypeBackend.Services
 {
     public class UserService
     {

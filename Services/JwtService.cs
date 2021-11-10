@@ -1,9 +1,4 @@
-﻿using System;
-using System.Text;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
-
-namespace IncludeTypeBackend.Services
+﻿namespace IncludeTypeBackend.Services
 {
     public class JwtService
     {
