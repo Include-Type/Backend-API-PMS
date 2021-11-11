@@ -6,17 +6,6 @@
         {
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
-
-            var connectionString = configuration.GetConnectionString("PostgreSqlDatabase");
-            optionsBuilder.UseNpgsql(connectionString);
-        }
-
         public DbSet<User> User { get; set; }
         public DbSet<ProfessionalProfile> ProfessionalProfile { get; set; }
         public DbSet<Privacy> Privacy { get; set; }
