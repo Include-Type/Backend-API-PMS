@@ -6,6 +6,7 @@ global using System.Text;
 global using System.IO;
 global using System.IdentityModel.Tokens.Jwt;
 
+global using Microsoft.AspNetCore.Http;
 global using Microsoft.AspNetCore.Hosting;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.Hosting;
