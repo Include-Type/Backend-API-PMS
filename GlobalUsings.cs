@@ -4,6 +4,7 @@ global using System.Linq;
 global using System.Threading.Tasks;
 global using System.Text;
 global using System.IO;
+global using System.Globalization;
 global using System.IdentityModel.Tokens.Jwt;
 
 global using Microsoft.AspNetCore.Http;
@@ -23,3 +24,4 @@ global using static BCrypt.Net.BCrypt;
 global using IncludeTypeBackend.Services;
 global using IncludeTypeBackend.Models;
 global using IncludeTypeBackend.Dtos;
+global using IncludeTypeBackend.Utils;
