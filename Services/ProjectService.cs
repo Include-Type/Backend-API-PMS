@@ -19,14 +19,17 @@ public class ProjectService
         return await _db.ProjectTask.Where(task => task.Assigned.Contains(username)).ToListAsync();
     }
 
-    public async Task UpdateAllTasksAsync(ProjectTask[] projectTasks, string username)
+    public async Task UpdateAllTasksByUsernameAsync(ProjectTask[] projectTasks, string username)
     {
-        List<ProjectTask> ptask = await GetAllTasksByUsernameAsync(username);
-        foreach(ProjectTask p in ptask)
+        foreach (ProjectTask projectTask in _db.ProjectTask)
         {
-            _db.ProjectTask.Remove(p);
+            if (projectTask.Assigned.Contains(username))
+            {
+                _db.ProjectTask.Remove(projectTask);
+            }
         }
+
         await _db.ProjectTask.AddRangeAsync(projectTasks);
-        await _db.SaveChangesAsync(); // Delete this temporary line first
+        await _db.SaveChangesAsync();
     }
 }

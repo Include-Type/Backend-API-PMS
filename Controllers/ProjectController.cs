@@ -27,7 +27,7 @@ public class ProjectController : ControllerBase
     {
         if (ModelState.IsValid)
         {
-            await _project.UpdateAllTasksAsync(projectTasks.Tasks, username);
+            await _project.UpdateAllTasksByUsernameAsync(projectTasks.Tasks, username);
             return Ok("Project tasks updated.");
         }
 
