@@ -32,4 +32,9 @@ public class ProjectService
         await _db.ProjectTask.AddRangeAsync(projectTasks);
         await _db.SaveChangesAsync();
     }
+
+    public async Task<List<ProjectTask>> GetAllTasksForGivenDeadlineAsync(string key)
+    {
+        return await _db.ProjectTask.Where(task => task.Deadline == key).ToListAsync();
+    }
 }

@@ -33,4 +33,12 @@ public class ProjectController : ControllerBase
 
         return BadRequest("Invalid user credentials!");
     }
+
+    [HttpGet("[action]/{key}")]
+    public async Task<ActionResult<List<ProjectTask>>> GetTasksForGivenDeadline(string key)
+    {
+        List<ProjectTask> projectTasks = await _project.GetAllTasksForGivenDeadlineAsync(key);
+        projectTasks.Sort(new ProjectTaskComparer());
+        return projectTasks;
+    }
 }
