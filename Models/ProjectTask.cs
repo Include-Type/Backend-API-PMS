@@ -12,4 +12,5 @@ public class ProjectTask
     public string Assigned { get; set; }
     public bool Completed { get; set; }
     public string Priority { get; set; }
+    public string Author { get; set; }
 }

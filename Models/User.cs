@@ -16,4 +16,5 @@ public class User
     public string Pincode { get; set; } = "";
     public string Contact { get; set; } = "";
     public string Picture { get; set; } = "";
+    public bool IsAdmin { get; set; } = false;
 }

@@ -14,6 +14,14 @@ public class ProjectController : ControllerBase
     [HttpGet("[action]")]
     public async Task<ActionResult<int>> GetTotalTasks() => await _project.GetTotalTasksAsync();
 
+    [HttpGet("[action]/{author}")]
+    public async Task<ActionResult<List<ProjectTask>>> GetTasksByAuthor(string author)
+    {
+        List<ProjectTask> projectTasks = await _project.GetAllTasksByAuthorAsync(author);
+        projectTasks.Sort(new ProjectTaskComparer());
+        return projectTasks;
+    }
+
     [HttpGet("[action]/{username}")]
     public async Task<ActionResult<List<ProjectTask>>> GetTasksByUsername(string username)
     {
@@ -22,8 +30,20 @@ public class ProjectController : ControllerBase
         return projectTasks;
     }
 
+    [HttpPost("[action]/{author}")]
+    public async Task<ActionResult> UpdateTasksByAuthor([FromBody] ProjectTaskDto projectTasks, string author)
+    {
+        if (ModelState.IsValid)
+        {
+            await _project.UpdateAllTasksByAuthorAsync(projectTasks.Tasks, author);
+            return Ok("Project tasks updated.");
+        }
+
+        return BadRequest("Invalid user credentials!");
+    }
+
     [HttpPost("[action]/{username}")]
-    public async Task<ActionResult> UpdateTasks([FromBody] ProjectTaskDto projectTasks, string username)
+    public async Task<ActionResult> UpdateTasksByUsername([FromBody] ProjectTaskDto projectTasks, string username)
     {
         if (ModelState.IsValid)
         {
