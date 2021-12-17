@@ -2,11 +2,11 @@ namespace IncludeTypeBackend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ProjectController : ControllerBase
+public class ProjectTaskController : ControllerBase
 {
-    private readonly ProjectService _project;
+    private readonly ProjectTaskService _project;
 
-    public ProjectController(ProjectService project) => _project = project;
+    public ProjectTaskController(ProjectTaskService project) => _project = project;
 
     [HttpGet("[action]")]
     public async Task<ActionResult<List<ProjectTask>>> GetTasks() => await _project.GetAllTasksAsync();

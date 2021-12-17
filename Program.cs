@@ -33,7 +33,7 @@ builder.Services.AddDbContext<PostgreSqlContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlDatabase")));
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<ProjectService>();
+builder.Services.AddScoped<ProjectTaskService>();
 
 var app = builder.Build();
 
