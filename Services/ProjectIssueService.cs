@@ -14,41 +14,41 @@ public class ProjectIssueService
         return projectIssue.Count;
     }
 
-    public async Task<List<ProjectIssue>> GetAllIssueByAuthorAsync(string author)
+    public async Task<List<ProjectIssue>> GetAllIssuesByAuthorAsync(string author)
     {
         return await _db.ProjectIssue.Where(issue => issue.Author.Equals(author)).ToListAsync();
     }
 
-    public async Task<List<ProjectIssue>> GetAllIssueByUsernameAsync(string username)
+    public async Task<List<ProjectIssue>> GetAllIssuesByUsernameAsync(string username)
     {
         return await _db.ProjectIssue.Where(issue => issue.Assigned.Contains(username)).ToListAsync();
     }
 
-     public async Task UpdateAllIssueByAuthorAsync(ProjectIssue[] projectIssue, string author)
+    public async Task UpdateAllIssuesByAuthorAsync(ProjectIssue[] projectIssues, string author)
     {
-        foreach (ProjectIssue projectIssues in _db.ProjectIssue)
+        foreach (ProjectIssue projectIssue in _db.ProjectIssue)
         {
-            if (projectIssues.Author.Equals(author))
+            if (projectIssue.Author.Equals(author))
             {
-                _db.ProjectIssue.Remove(projectIssues);
+                _db.ProjectIssue.Remove(projectIssue);
             }
         }
 
-        foreach (ProjectIssue projectIssues in projectIssue)
+        foreach (ProjectIssue projectIssue in projectIssues)
         {
-            if (projectIssues.Id.Length < 10)
+            if (projectIssue.Id.Length < 10)
             {
                 Guid guid = Guid.NewGuid();
-                projectIssues.Id = Convert.ToString(guid);
+                projectIssue.Id = Convert.ToString(guid);
             }
 
-            await _db.ProjectIssue.AddAsync(projectIssues);
+            await _db.ProjectIssue.AddAsync(projectIssue);
         }
 
         await _db.SaveChangesAsync();
     }
 
-    public async Task UpdateAllIssueByUsernameAsync(ProjectIssue[] projectIssues, string username)
+    public async Task UpdateAllIssuesByUsernameAsync(ProjectIssue[] projectIssues, string username)
     {
         foreach (ProjectIssue projectIssue in _db.ProjectIssue)
         {
@@ -72,5 +72,8 @@ public class ProjectIssueService
         await _db.SaveChangesAsync();
     }
 
-
+    public async Task<List<ProjectIssue>> GetAllIssuesForGivenDeadlineAsync(string key)
+    {
+        return await _db.ProjectIssue.Where(issue => issue.Deadline.Equals(key)).ToListAsync();
+    }
 }

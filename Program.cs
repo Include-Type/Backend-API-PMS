@@ -34,6 +34,7 @@ builder.Services.AddDbContext<PostgreSqlContext>(options =>
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<ProjectTaskService>();
+builder.Services.AddScoped<ProjectIssueService>();
 
 var app = builder.Build();
 

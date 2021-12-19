@@ -17,42 +17,48 @@ public class ProjectIssueController : ControllerBase
     [HttpGet("[action]/{author}")]
     public async Task<ActionResult<List<ProjectIssue>>> GetIssuesByAuthor(string author)
     {
-        List<ProjectIssue> projectIssue = await _project.GetAllIssueByAuthorAsync(author);
-        return projectIssue;
+        List<ProjectIssue> projectIssues = await _project.GetAllIssuesByAuthorAsync(author);
+        projectIssues.Sort(new ProjectIssueComparer());
+        return projectIssues;
     }
 
     [HttpGet("[action]/{username}")]
-    public async Task<ActionResult<List<ProjectIssue>>> GetIssueByUsername(string username)
+    public async Task<ActionResult<List<ProjectIssue>>> GetIssuesByUsername(string username)
     {
-        List<ProjectIssue> projectIssue = await _project.GetAllIssueByUsernameAsync(username);
-        return projectIssue;
+        List<ProjectIssue> projectIssues = await _project.GetAllIssuesByUsernameAsync(username);
+        projectIssues.Sort(new ProjectIssueComparer());
+        return projectIssues;
     }
 
-     [HttpPost("[action]/{author}")]
-    public async Task<ActionResult> UpdateIssueByAuthor([FromBody] ProjectIssueDto projectIssue, string author)
+    [HttpPost("[action]/{author}")]
+    public async Task<ActionResult> UpdateIssuesByAuthor([FromBody] ProjectIssueDto projectIssues, string author)
     {
         if (ModelState.IsValid)
         {
-            await _project.UpdateAllIssueByAuthorAsync(projectIssue.Issues, author);
-            return Ok("Project issue updated.");
+            await _project.UpdateAllIssuesByAuthorAsync(projectIssues.Issues, author);
+            return Ok("Project issues updated.");
         }
 
         return BadRequest("Invalid user credentials!");
     }
 
     [HttpPost("[action]/{username}")]
-    public async Task<ActionResult> UpdateIssueByUsername([FromBody] ProjectIssueDto projectIssue, string username)
+    public async Task<ActionResult> UpdateIssuesByUsername([FromBody] ProjectIssueDto projectIssues, string username)
     {
         if (ModelState.IsValid)
         {
-            await _project.UpdateAllIssueByUsernameAsync(projectIssue.Issues, username);
-            return Ok("Project issue updated.");
+            await _project.UpdateAllIssuesByUsernameAsync(projectIssues.Issues, username);
+            return Ok("Project issues updated.");
         }
 
         return BadRequest("Invalid user credentials!");
     }
 
-
+    [HttpGet("[action]/{key}")]
+    public async Task<ActionResult<List<ProjectIssue>>> GetIssuesForGivenDeadline(string key)
+    {
+        List<ProjectIssue> projectIssues = await _project.GetAllIssuesForGivenDeadlineAsync(key);
+        projectIssues.Sort(new ProjectIssueComparer());
+        return projectIssues;
+    }
 }
-
-
