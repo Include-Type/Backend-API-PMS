@@ -10,6 +10,7 @@ public class PostgreSqlContext : DbContext
     public DbSet<ProfessionalProfile> ProfessionalProfile { get; set; }
     public DbSet<Privacy> Privacy { get; set; }
     public DbSet<ProjectTask> ProjectTask { get; set; }
+    public DbSet<ProjectIssue> ProjectIssue { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -36,6 +37,11 @@ public class PostgreSqlContext : DbContext
         builder.Entity<ProjectTask>(entity =>
         {
             entity.HasKey(task => task.Id);
+        });
+
+        builder.Entity<ProjectIssue>(entity =>
+        {
+            entity.HasKey(issue => issue.Id);
         });
     }
 

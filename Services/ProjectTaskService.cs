@@ -74,6 +74,6 @@ public class ProjectTaskService
 
     public async Task<List<ProjectTask>> GetAllTasksForGivenDeadlineAsync(string key)
     {
-        return await _db.ProjectTask.Where(task => task.Deadline == key).ToListAsync();
+        return await _db.ProjectTask.Where(task => task.Deadline.Equals(key)).ToListAsync();
     }
 }
