@@ -11,6 +11,8 @@ public class PostgreSqlContext : DbContext
     public DbSet<Privacy> Privacy { get; set; }
     public DbSet<ProjectTask> ProjectTask { get; set; }
     public DbSet<ProjectIssue> ProjectIssue { get; set; }
+    public DbSet<Project> Project { get; set; }
+    public DbSet<ProjectMember> ProjectMember { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -22,7 +24,6 @@ public class PostgreSqlContext : DbContext
             entity.HasIndex(user => user.Username).IsUnique();
             entity.HasIndex(user => user.Email).IsUnique();
         });
-        base.OnModelCreating(builder);
 
         builder.Entity<ProfessionalProfile>(entity =>
         {
@@ -43,6 +44,19 @@ public class PostgreSqlContext : DbContext
         {
             entity.HasKey(issue => issue.Id);
         });
+
+        builder.Entity<Project>(entity =>
+        {
+            entity.HasKey(project => project.Id);
+            entity.HasIndex(project => project.Name).IsUnique();
+        });
+
+        builder.Entity<ProjectMember>(entity =>
+        {
+            entity.HasKey(member => member.Id);
+        });
+
+        base.OnModelCreating(builder);
     }
 
     public override int SaveChanges()
