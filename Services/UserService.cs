@@ -105,4 +105,46 @@ public class UserService
         _db.Privacy.Remove(privacyProfile);
         await _db.SaveChangesAsync();
     }
+
+    public async Task<List<UserVerification>> GetAllPendingUserVerificationsAsync() =>
+        await _db.UserVerification.ToListAsync();
+
+    public async Task<UserVerification> GetPendingUserVerificationAsync(string userId) =>
+        await _db.UserVerification.FirstOrDefaultAsync(verifier => verifier.UserId.Equals(userId));
+
+    public async Task DeletePendingUserVerificationAsync(string userId)
+    {
+        UserVerification userVerification = await GetPendingUserVerificationAsync(userId);
+        if (userVerification is not null)
+        {
+            _db.UserVerification.Remove(userVerification);
+        }
+    }
+
+    public async Task<string> AddPendingUserVerificationAsync(string userId)
+    {
+        await DeletePendingUserVerificationAsync(userId);
+        string uniqueString = userId + Convert.ToString(Guid.NewGuid());
+        UserVerification userVerification = new()
+        {
+            UserId = userId,
+            UniqueString = HashPassword(uniqueString),
+            CreationTime = Convert.ToString(DateTime.Now),
+            ExpirationTime = Convert.ToString(DateTime.Now.AddMinutes(15))
+        };
+
+        await _db.UserVerification.AddAsync(userVerification);
+        await _db.SaveChangesAsync();
+        return uniqueString;
+    }
+
+    public async Task UpdateUserPasswordAsync(string userId, string newPassword)
+    {
+        User user = await GetUserAsync(userId);
+        if (user is not null)
+        {
+            user.Password = HashPassword(newPassword);
+            await _db.SaveChangesAsync();
+        }
+    }
 }

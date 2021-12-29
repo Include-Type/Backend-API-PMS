@@ -14,12 +14,17 @@ global using Microsoft.Extensions.Hosting;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.AspNetCore.Builder;
+global using Microsoft.Extensions.Options;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.OpenApi.Models;
 global using Microsoft.IdentityModel.Tokens;
 
 global using static BCrypt.Net.BCrypt;
+
+global using MailKit.Net.Smtp;
+global using MailKit.Security;
+global using MimeKit;
 
 global using IncludeTypeBackend.Services;
 global using IncludeTypeBackend.Models;
