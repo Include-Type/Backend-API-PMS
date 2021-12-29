@@ -238,10 +238,10 @@ public class UserController : ControllerBase
     public async Task<ActionResult<List<UserVerification>>> GetAllPendingUserVerifications() =>
         await _user.GetAllPendingUserVerificationsAsync();
 
-    [HttpPost("[action]/{email}")]
-    public async Task<ActionResult> RequestPasswordReset(string email)
+    [HttpPost("[action]")]
+    public async Task<ActionResult> RequestPasswordReset([FromBody] UserVerificationRequestDto requestDto)
     {
-        User requestedUser = await _user.GetUserAsync(email);
+        User requestedUser = await _user.GetUserAsync(requestDto.Email);
         if (requestedUser is null)
         {
             return NotFound("USER NOT FOUND");
@@ -252,7 +252,7 @@ public class UserController : ControllerBase
             string uniqueString = await _user.AddPendingUserVerificationAsync(requestedUser.Id);
             EmailForm emailForm = new()
             {
-                ToEmailAddress = email,
+                ToEmailAddress = requestDto.Email,
                 Subject = @"Reset Password | #include <TYPE>",
                 Body = $@"<h4>Click <a href='https://include-type.github.io/reset-password/{requestedUser.Id}/{uniqueString}'>HERE</a>
                           to reset your password.</h4>
