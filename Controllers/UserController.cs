@@ -252,7 +252,7 @@ public class UserController : ControllerBase
             string uniqueString = await _user.AddPendingUserVerificationAsync(requestedUser.Id);
             EmailForm emailForm = new()
             {
-                ToEmailAddress = $@"{requestDto.Email}",
+                ToEmailAddress = requestDto.Email,
                 Subject = @"Reset Password | #include <TYPE>",
                 Body = $@"<h4>Click <a href='https://include-type.github.io/reset-password/{requestedUser.Id}/{uniqueString}'>HERE</a>
                           to reset your password.</h4>
@@ -263,9 +263,9 @@ public class UserController : ControllerBase
             await _email.SendEmailAsync(emailForm);
             return Ok("SUCCESS");
         }
-        catch (Exception ex)
+        catch
         {
-            return BadRequest(ex.Message);
+            return BadRequest("FAILED");
         }
     }
 
