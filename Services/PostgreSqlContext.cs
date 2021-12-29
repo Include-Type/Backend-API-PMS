@@ -7,6 +7,7 @@ public class PostgreSqlContext : DbContext
     }
 
     public DbSet<User> User { get; set; }
+    public DbSet<UserVerification> UserVerification { get; set; }
     public DbSet<ProfessionalProfile> ProfessionalProfile { get; set; }
     public DbSet<Privacy> Privacy { get; set; }
     public DbSet<ProjectTask> ProjectTask { get; set; }
@@ -23,6 +24,11 @@ public class PostgreSqlContext : DbContext
             entity.HasKey(user => user.Id);
             entity.HasIndex(user => user.Username).IsUnique();
             entity.HasIndex(user => user.Email).IsUnique();
+        });
+
+        builder.Entity<UserVerification>(entity =>
+        {
+            entity.HasKey(verifier => verifier.UniqueString);
         });
 
         builder.Entity<ProfessionalProfile>(entity =>

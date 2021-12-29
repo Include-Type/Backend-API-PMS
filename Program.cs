@@ -4,11 +4,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.WriteIndented = true;
-    });
+builder.Services
+       .AddControllers()
+       .AddJsonOptions(options =>
+       {
+           options.JsonSerializerOptions.WriteIndented = true;
+       });
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -31,6 +32,8 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddDbContext<PostgreSqlContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlDatabase")));
+builder.Services.Configure<EmailConfiguration>(builder.Configuration.GetSection("EmailConfiguration"));
+builder.Services.AddTransient<EmailService>();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<ProjectTaskService>();

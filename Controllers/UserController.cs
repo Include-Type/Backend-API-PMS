@@ -5,11 +5,13 @@
 public class UserController : ControllerBase
 {
     private readonly UserService _user;
+    private readonly EmailService _email;
     private readonly JwtService _jwtService;
 
-    public UserController(UserService user, JwtService jwtService)
+    public UserController(UserService user, EmailService email, JwtService jwtService)
     {
         _user = user;
+        _email = email;
         _jwtService = jwtService;
     }
 
@@ -230,5 +232,71 @@ public class UserController : ControllerBase
             Secure = true
         });
         return Ok("Logout Successfull.");
+    }
+
+    [HttpGet("[action]")]
+    public async Task<ActionResult<List<UserVerification>>> GetAllPendingUserVerifications() =>
+        await _user.GetAllPendingUserVerificationsAsync();
+
+    [HttpPost("[action]/{email}")]
+    public async Task<ActionResult> RequestPasswordReset(string email)
+    {
+        User requestedUser = await _user.GetUserAsync(email);
+        if (requestedUser is null)
+        {
+            return NotFound("USER NOT FOUND");
+        }
+
+        try
+        {
+            string uniqueString = await _user.AddPendingUserVerificationAsync(requestedUser.Id);
+            EmailForm emailForm = new()
+            {
+                ToEmailAddress = email,
+                Subject = @"Reset Password | #include <TYPE>",
+                Body = $@"<h4>Click <a href='https://include-type.github.io/reset-password/{requestedUser.Id}/{uniqueString}'>HERE</a>
+                          to reset your password.</h4>
+                          <p>The above link will <b>expire in 15 mins.</b></p>",
+                Attachments = null
+            };
+
+            await _email.SendEmailAsync(emailForm);
+            return Ok("SUCCESS");
+        }
+        catch
+        {
+            return BadRequest("FAILED");
+        }
+    }
+
+    [HttpPost("[action]")]
+    public async Task<ActionResult> AuthorizePasswordReset([FromBody] UserVerificationDto userVerificationDto)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("FAILED");
+            }
+
+            UserVerification userVerification = await _user.GetPendingUserVerificationAsync(userVerificationDto.UserId);
+            if (userVerification is null || !Verify(userVerificationDto.UniqueString, userVerification.UniqueString))
+            {
+                return Unauthorized("FAILED");
+            }
+
+            if (DateTime.Compare(DateTime.Now, DateTime.Parse(userVerification.ExpirationTime)) > 0)
+            {
+                return Unauthorized("EXPIRED");
+            }
+
+            await _user.DeletePendingUserVerificationAsync(userVerificationDto.UserId);
+            await _user.UpdateUserPasswordAsync(userVerificationDto.UserId, userVerificationDto.NewPassword);
+            return Ok("SUCCESS");
+        }
+        catch
+        {
+            return BadRequest("FAILED");
+        }
     }
 }
