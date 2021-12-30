@@ -82,4 +82,23 @@ public class ProjectService
             IsAdmin = isAdmin
         };
     }
+
+    //public async Task AddProjectAsync(Project project)
+    //{
+    //    // Add the `project` into the DB `Project` table.
+    //    // Save the DB.
+    //}
+
+    //public async Task UpdateProjectAsync(Project existingProject, Project updatedProject)
+    //{
+    //    // Update all the properties of the `existingProject` with the `updatedProject`.
+    //    // Save the DB.
+    //}
+
+    //public async Task UpdateProjectMembersAsync(string projectName, ProjectMember projectMembers)
+    //{
+    //    // First, delete all the existing members from that specific project
+    //    // Then add all the members from `projectMembers` into the DB.
+    //    // Save DB.
+    //}
 }
