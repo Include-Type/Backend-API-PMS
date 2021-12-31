@@ -83,22 +83,36 @@ public class ProjectService
         };
     }
 
-    //public async Task AddProjectAsync(Project project)
-    //{
-    //    // Add the `project` into the DB `Project` table.
-    //    // Save the DB.
-    //}
+    public async Task AddProjectAsync(Project project)
+    {
+        await _db.Project.AddAsync(project);
+        await _db.SaveChangesAsync();
 
-    //public async Task UpdateProjectAsync(Project existingProject, Project updatedProject)
-    //{
-    //    // Update all the properties of the `existingProject` with the `updatedProject`.
-    //    // Save the DB.
-    //}
+    }
 
-    //public async Task UpdateProjectMembersAsync(string projectName, ProjectMember projectMembers)
-    //{
-    //    // First, delete all the existing members from that specific project
-    //    // Then add all the members from `projectMembers` into the DB.
-    //    // Save DB.
-    //}
+    public async Task UpdateProjectAsync(Project existingProject, Project updatedProject)
+    {
+        existingProject.Id = updatedProject.Id;
+        existingProject.Date = updatedProject.Date;
+        existingProject.Name = updatedProject.Name;
+        existingProject.Status = updatedProject.Status;
+        existingProject.About = updatedProject.About;
+        existingProject.Documentation = updatedProject.Documentation;
+        await _db.SaveChangesAsync();
+    }
+
+    public async Task UpdateProjectMembersAsync(string projectName, ProjectMember projectMembers)
+    {
+        foreach(ProjectMember projectMember in _db.ProjectMember)
+        {
+            if(projectMember.ProjName.Equals(projectName))
+            {
+                _db.ProjectMember.Remove(projectMember);
+            }
+            await _db.ProjectMember.AddAsync(projectMembers);
+        }
+        await _db.SaveChangesAsync();
+    }
+
+    
 }
