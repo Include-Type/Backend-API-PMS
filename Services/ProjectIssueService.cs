@@ -76,4 +76,10 @@ public class ProjectIssueService
     {
         return await _db.ProjectIssue.Where(issue => issue.Deadline.Equals(key)).ToListAsync();
     }
+
+    public async Task AddIssueAsync(ProjectIssue issue)
+    {
+        await _db.ProjectIssue.AddAsync(issue);
+        await _db.SaveChangesAsync();
+    }
 }

@@ -61,4 +61,18 @@ public class ProjectIssueController : ControllerBase
         projectIssues.Sort(new ProjectIssueComparer());
         return projectIssues;
     }
+
+    [HttpPost("[action]")]
+    public async Task<ActionResult> AddIssue([FromBody] ProjectIssue issue)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest("Invalid request");
+        }
+
+        Guid guid = Guid.NewGuid();
+        issue.Id = Convert.ToString(guid);
+        await _project.AddIssueAsync(issue);
+        return Ok("Issue successfully added.");
+    }
 }

@@ -61,4 +61,18 @@ public class ProjectTaskController : ControllerBase
         projectTasks.Sort(new ProjectTaskComparer());
         return projectTasks;
     }
+
+    [HttpPost("[action]")]
+    public async Task<ActionResult> AddTask([FromBody] ProjectTask task)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest("Invalid request");
+        }
+
+        Guid guid = Guid.NewGuid();
+        task.Id = Convert.ToString(guid);
+        await _project.AddTaskAsync(task);
+        return Ok("Task successfully added");
+    }
 }
