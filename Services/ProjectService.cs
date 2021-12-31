@@ -32,8 +32,8 @@ public class ProjectService
         return result;
     }
 
-    public async Task<Project> GetProjectAsync(string projectName) =>
-        await _db.Project.FirstOrDefaultAsync(p => p.Name.Equals(projectName));
+    public async Task<Project> GetProjectAsync(string key) =>
+        await _db.Project.FirstOrDefaultAsync(p => p.Id.Equals(key) || p.Name.Equals(key));
 
     public async Task<List<ProjectMember>> GetAllProjectMembersAsync(string projectName) =>
         await _db.ProjectMember
@@ -83,22 +83,48 @@ public class ProjectService
         };
     }
 
-    //public async Task AddProjectAsync(Project project)
-    //{
-    //    // Add the `project` into the DB `Project` table.
-    //    // Save the DB.
-    //}
+    public async Task AddProjectAsync(Project project)
+    {
+        await _db.Project.AddAsync(project);
+        await _db.SaveChangesAsync();
+    }
 
-    //public async Task UpdateProjectAsync(Project existingProject, Project updatedProject)
-    //{
-    //    // Update all the properties of the `existingProject` with the `updatedProject`.
-    //    // Save the DB.
-    //}
+    public async Task UpdateProjectAsync(Project existingProject, Project updatedProject)
+    {
+        if (!existingProject.Name.Equals(updatedProject.Name))
+        {
+            List<ProjectMember> projectMembers = await GetAllProjectMembersAsync(existingProject.Name);
+            foreach (ProjectMember projectMember in projectMembers)
+            {
+                projectMember.ProjName = updatedProject.Name;
+            }
+        }
 
-    //public async Task UpdateProjectMembersAsync(string projectName, ProjectMember projectMembers)
-    //{
-    //    // First, delete all the existing members from that specific project
-    //    // Then add all the members from `projectMembers` into the DB.
-    //    // Save DB.
-    //}
+        existingProject.Id = updatedProject.Id;
+        existingProject.Date = updatedProject.Date;
+        existingProject.Name = updatedProject.Name;
+        existingProject.Status = updatedProject.Status;
+        existingProject.About = updatedProject.About;
+        existingProject.Documentation = updatedProject.Documentation;
+
+        await _db.SaveChangesAsync();
+    }
+
+    public async Task UpdateProjectMembersAsync(string projectName, List<ProjectMember> projectMembers)
+    {
+        _db.ProjectMember.RemoveRange(await GetAllProjectMembersAsync(projectName));
+
+        foreach (ProjectMember projectMember in projectMembers)
+        {
+            if (projectMember.Id.Length < 10)
+            {
+                Guid guid = Guid.NewGuid();
+                projectMember.Id = Convert.ToString(guid);
+            }
+
+            await _db.ProjectMember.AddAsync(projectMember);
+        }
+
+        await _db.SaveChangesAsync();
+    }
 }

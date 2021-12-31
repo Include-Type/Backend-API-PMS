@@ -76,4 +76,10 @@ public class ProjectTaskService
     {
         return await _db.ProjectTask.Where(task => task.Deadline.Equals(key)).ToListAsync();
     }
+
+    public async Task AddTaskAsync(ProjectTask task)
+    {
+        await _db.ProjectTask.AddAsync(task);
+        await _db.SaveChangesAsync();
+    }
 }
