@@ -35,8 +35,8 @@ public class ProjectController : ControllerBase
         return await _project.GetProjectDetailsAsync(temp[0], temp[1]);
     }
 
-    [HttpPost("[action]")]
-    public async Task<ActionResult> AddProject([FromBody] Project project)
+    [HttpPost("[action]/{username}")]
+    public async Task<ActionResult> AddProject(string username, [FromBody] Project project)
     {
         if (!ModelState.IsValid)
         {
@@ -45,7 +45,7 @@ public class ProjectController : ControllerBase
 
         Guid guid = Guid.NewGuid();
         project.Id = Convert.ToString(guid);
-        await _project.AddProjectAsync(project);
+        await _project.AddProjectAsync(project, username);
         return Ok("Project successfully added.");
     }
 
@@ -83,5 +83,12 @@ public class ProjectController : ControllerBase
 
         await _project.UpdateProjectMembersAsync(projName, projectMembers);
         return Ok("Project members updated.");
+    }
+
+    [HttpDelete("[action]")]
+    public async Task<ActionResult> DeleteAllTerminatedProjects()
+    {
+        await _project.DeleteAllTerminatedProjectsAsync();
+        return Ok("All Terminated projects deleted successfully.");
     }
 }

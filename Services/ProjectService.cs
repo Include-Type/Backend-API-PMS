@@ -83,9 +83,19 @@ public class ProjectService
         };
     }
 
-    public async Task AddProjectAsync(Project project)
+    public async Task AddProjectAsync(Project project, string adminUsername)
     {
         await _db.Project.AddAsync(project);
+        User user = await _db.User.FirstOrDefaultAsync(u => u.Username.Equals(adminUsername));
+        ProjectMember newAdminUser = new()
+        {
+            Id = Convert.ToString(Guid.NewGuid()),
+            ProjName = project.Name,
+            Name = $"{user.FirstName} {user.LastName}",
+            Role = "Admin",
+            Username = user.Username
+        };
+        await _db.ProjectMember.AddAsync(newAdminUser);
         await _db.SaveChangesAsync();
     }
 
@@ -125,6 +135,20 @@ public class ProjectService
             await _db.ProjectMember.AddAsync(projectMember);
         }
 
+        await _db.SaveChangesAsync();
+    }
+
+    public async Task DeleteAllTerminatedProjectsAsync()
+    {
+        List<Project> terminatedProjects = await _db.Project
+                                                    .Where(p => p.Status.Equals("Terminated"))
+                                                    .ToListAsync();
+        foreach (Project project in terminatedProjects)
+        {
+            _db.ProjectMember.RemoveRange(await GetAllProjectMembersAsync(project.Name));
+        }
+
+        _db.Project.RemoveRange(terminatedProjects);
         await _db.SaveChangesAsync();
     }
 }
