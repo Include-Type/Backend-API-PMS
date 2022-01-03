@@ -72,6 +72,10 @@ public class ProjectTaskController : ControllerBase
 
         Guid guid = Guid.NewGuid();
         task.Id = Convert.ToString(guid);
+
+        DateTime dateTime = DateTime.Now;
+        task.Date = dateTime.ToString("MMM-dd-yyyy");
+
         await _project.AddTaskAsync(task);
         return Ok("Task successfully added");
     }
