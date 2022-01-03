@@ -72,6 +72,17 @@ public class ProjectTaskController : ControllerBase
 
         Guid guid = Guid.NewGuid();
         task.Id = Convert.ToString(guid);
+
+        DateTime dateTime = DateTime.Now;
+        task.Date = dateTime.ToString("MMM-dd-yyyy");
+
+        // Current Front-End DateTime format: 
+        // "Mon Jan 03 2022 02:04:56 GMT+0530 (India Standard Time)"
+        string[] dateParts = task.Deadline.Split(" ");
+        string dueDateStr = $"{dateParts[1]} {dateParts[2]} {dateParts[3]} {dateParts[4]}";
+        DateTime dueDate = DateTime.Parse(dueDateStr);
+        task.Deadline = dueDate.ToString("MMM-dd-yyyy");
+
         await _project.AddTaskAsync(task);
         return Ok("Task successfully added");
     }

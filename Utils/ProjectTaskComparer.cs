@@ -20,14 +20,14 @@ public class ProjectTaskComparer : Comparer<ProjectTask>
         int PT1_POINTS = 0;
         int PT2_POINTS = 0;
 
-        string format = "MMM-dd-yyyy";
+        string[] formats = { "MM/dd/yyyy hh:mm tt", "MMM-dd-yyyy" };
         CultureInfo culture = CultureInfo.InvariantCulture;
 
         string x_dateStr = x.Deadline;
-        DateTime x_date = DateTime.ParseExact(x_dateStr, format, culture);
+        DateTime x_date = DateTime.ParseExact(x_dateStr, formats, culture);
 
         string y_dateStr = y.Deadline;
-        DateTime y_date = DateTime.ParseExact(y_dateStr, format, culture);
+        DateTime y_date = DateTime.ParseExact(y_dateStr, formats, culture);
 
         int res = DateTime.Compare(x_date, y_date);
         switch (res)
