@@ -45,6 +45,10 @@ public class ProjectController : ControllerBase
 
         Guid guid = Guid.NewGuid();
         project.Id = Convert.ToString(guid);
+
+        DateTime dateTime = DateTime.Now;
+        project.Date = dateTime.ToString("MMM-dd-yyyy");
+
         await _project.AddProjectAsync(project, username);
         return Ok("Project successfully added.");
     }
