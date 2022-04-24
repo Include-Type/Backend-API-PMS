@@ -263,9 +263,9 @@ public class UserController : ControllerBase
             await _email.SendEmailAsync(emailForm);
             return Ok("SUCCESS");
         }
-        catch (Exception ex)
+        catch
         {
-            return BadRequest(ex.Message);
+            return BadRequest("FAILED");
         }
     }
 
