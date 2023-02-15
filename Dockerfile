@@ -19,6 +19,6 @@ RUN dotnet publish "IncludeTypeBackend.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-# ENTRYPOINT ["dotnet", "IncludeTypeBackend.dll"]
+ENTRYPOINT ["dotnet", "IncludeTypeBackend.dll"]
 # Bellow is what Heroku uses:
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet IncludeTypeBackend.dll
+# CMD ASPNETCORE_URLS=http://*:$PORT dotnet IncludeTypeBackend.dll
