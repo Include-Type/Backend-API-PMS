@@ -6,4 +6,6 @@ public class UserVerification
     public string UniqueString { get; set; }
     public string CreationTime { get; set; }
     public string ExpirationTime { get; set; }
+    // Navigation Property
+    //public User User { get; set; }
 }

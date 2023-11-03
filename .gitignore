@@ -457,3 +457,6 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# .NET Core Migrations
+Migrations/*

@@ -17,4 +17,10 @@ public class User
     public string Contact { get; set; } = "";
     public string Picture { get; set; } = "";
     public bool IsAdmin { get; set; } = false;
+
+    // Navigation Properties
+    //public UserVerification UserVerification { get; set; }
+    //public Privacy Privacy { get; set; }
+    //public ProfessionalProfile ProfessionalProfile { get; set; }
+    //public ProjectMember ProjectMember { get; set; }
 }

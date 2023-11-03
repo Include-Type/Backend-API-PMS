@@ -14,4 +14,7 @@ public class Privacy
     public string Skills { get; set; } = "Public";
     public string Experience { get; set; } = "Public";
     public string Projects { get; set; } = "Public";
+    
+    // Navigation Property
+    //public User User { get; set; }
 }

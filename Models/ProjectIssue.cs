@@ -13,4 +13,7 @@ public class ProjectIssue
     public bool Completed { get; set; }
     public string Priority { get; set; }
     public string Author { get; set; }
+
+    // Navigation Property
+    //public Project Project { get; set; }
 }
