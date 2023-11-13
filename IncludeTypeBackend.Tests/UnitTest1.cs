@@ -1,6 +1,6 @@
 namespace IncludeTypeBackend.Tests;
 
-public class Tests
+public class UnitTest1
 {
     [Test]
     public async Task GetAllUsersTest()
