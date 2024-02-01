@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IncludeTypeBackend.Migrations
 {
     [DbContext(typeof(PostgreSqlContext))]
-    [Migration("20231102233257_Include-Type-DB.Initial")]
+    [Migration("20240201211527_Include-Type-DB.Initial")]
     partial class IncludeTypeDBInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -285,7 +285,7 @@ namespace IncludeTypeBackend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "596398ed-b86b-40eb-a4f9-66675d232440",
+                            Id = "e1fc3c10-cfaa-408f-9003-d4ace8e3f7e8",
                             Address = "",
                             Bio = "",
                             City = "",
@@ -295,7 +295,7 @@ namespace IncludeTypeBackend.Migrations
                             FirstName = "Subham",
                             IsAdmin = true,
                             LastName = "Karmakar",
-                            Password = "$2a$11$BzRSmI/Z8W4ccYj7f.trLuv9EhjAkNbZ8j2QpKrLJVFOnHu.3VeKi",
+                            Password = "$2a$11$KN2mO8jqPKdV3aAJBOzllebTl3B.rpAA/wePGjX4WggcUAzv8klrK",
                             Picture = "",
                             Pincode = "",
                             State = "",
