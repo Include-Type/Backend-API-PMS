@@ -174,7 +174,7 @@ namespace IncludeTypeBackend.Migrations
                 schema: "public",
                 table: "User",
                 columns: new[] { "Id", "Address", "Bio", "City", "Contact", "Country", "Email", "FirstName", "IsAdmin", "LastName", "Password", "Picture", "Pincode", "State", "Username" },
-                values: new object[] { "e1fc3c10-cfaa-408f-9003-d4ace8e3f7e8", "", "", "", "", "", "subhamkarmakar0901@gmail.com", "Subham", true, "Karmakar", "$2a$11$KN2mO8jqPKdV3aAJBOzllebTl3B.rpAA/wePGjX4WggcUAzv8klrK", "", "", "", "SubhamK108" });
+                values: new object[] { "daedeedc-2adf-41fd-ba48-cd6c8e5097ce", "", "", "", "", "", "subhamkarmakar0901@gmail.com", "Subham", true, "Karmakar", "$2a$11$MtHAr1tKWFl39PdDlw5rjO2oUS0nQMwTtZq/LDjeu3W6/u9GhF2Bu", "", "", "", "SubhamK108" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Project_Name",
